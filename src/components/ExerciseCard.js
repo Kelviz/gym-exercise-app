@@ -26,7 +26,7 @@ const ExerciseCard = ({ exercise }) => {
             color: "#fff",
             background: "#fcc757",
             fontSize: "14px",
-            borderRadius: "20px",
+            borderRadius: "21px",
             textTransform: "capitalize",
           }}
         >
