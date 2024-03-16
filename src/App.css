@@ -123,6 +123,10 @@ body {
     display: none;
   }
 
+  .hero-txt {
+    display: none;
+  }
+
   .exercise-card {
     width: 320px;
   }
