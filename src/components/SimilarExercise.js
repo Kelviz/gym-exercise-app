@@ -10,7 +10,7 @@ const SimilarExercise = ({ targetMuscleExercises, equipmentExercises }) => {
         sx={{ fontSize: { lg: "44px", xs: "25px" }, ml: "20px" }}
         fontWeight={700}
         color="#000"
-        mb="33px"
+        mb="1rem"
       >
         Exercises that target the same muscle group
       </Typography>
@@ -27,7 +27,8 @@ const SimilarExercise = ({ targetMuscleExercises, equipmentExercises }) => {
         sx={{ fontSize: { lg: "44px", xs: "25px" }, ml: "20px" }}
         fontWeight={700}
         color="#000"
-        mb="33px"
+        mb="1rem"
+        mt="5rem"
       >
         Exercises that use the same equipment
       </Typography>

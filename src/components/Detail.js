@@ -6,36 +6,51 @@ import TargetImage from "../assets/icons/target.png";
 import EquipmentImage from "../assets/icons/equipment.png";
 
 const Detail = ({ exerciseDetail }) => {
-  const { bodyPart, gifUrl, name, target, equipment } = exerciseDetail;
+  const {
+    bodypart,
+    image,
+    name,
+    target,
+    equipment,
+    instructions,
+    secondary_muscles,
+  } = exerciseDetail;
 
   const extraDetail = [
     {
       icon: BodyPartImage,
-      name: bodyPart,
+      name: bodypart?.name,
     },
     {
       icon: TargetImage,
-      name: target,
+      name: target?.name,
     },
     {
       icon: EquipmentImage,
-      name: equipment,
+      name: equipment?.name,
     },
   ];
 
   return (
     <Stack
       gap="60px"
-      sx={{ flexDirection: { lg: "row" }, p: "20px", alignItems: "center" }}
+      mt="4rem"
+      sx={{ flexDirection: { lg: "row" }, p: "20px", alignItems: "start" }}
     >
-      <img src={gifUrl} alt={name} loading="lazy" className="detail-image" />
+      <img src={image} alt={name} loading="lazy" className="detail-image" />
 
       <Stack sx={{ gap: { lg: "35px", xs: "20px" } }}>
         <Typography variant="h3">{name}</Typography>
+        <Typography variant="h4">Instructions</Typography>
+        {instructions &&
+          instructions.map((item) => (
+            <Typography variant="h6">{item}</Typography>
+          ))}
+
         <Typography variant="h6">
-          Exercise keep you strong. {name} is one of the exercises to target
-          your {target}. It will help you improve your mood and gain energy.
+          Secondary muscles: [ {secondary_muscles}]
         </Typography>
+
         {extraDetail.map((item) => (
           <Stack key={item.name} direction="row" gap="24px" alignItems="center">
             <Button
@@ -48,7 +63,7 @@ const Detail = ({ exerciseDetail }) => {
             >
               <img
                 src={item.icon}
-                alt={bodyPart}
+                alt={bodypart?.name}
                 style={{ width: "50px", height: "50px" }}
               />
             </Button>

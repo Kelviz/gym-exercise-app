@@ -3,9 +3,21 @@ import { Link } from "react-router-dom";
 import { Button, Stack, Typography } from "@mui/material";
 
 const ExerciseCard = ({ exercise }) => {
+  const normalizeImageUrl = (image) => {
+    if (image.startsWith("http")) {
+      return image; // It's already a full URL
+    }
+    return `http://127.0.0.1:8000${image}`; // Prepend base URL
+  };
+
+  console.log("excerises data", exercise);
   return (
     <Link className="exercise-card" to={`/exercise/${exercise.id}`}>
-      <img src={exercise.gifUrl} alt={exercise.name} loading="lazy" />
+      <img
+        src={normalizeImageUrl(exercise?.image)}
+        alt={exercise?.name}
+        loading="lazy"
+      />
       <Stack direction="row">
         <Button
           sx={{
@@ -17,7 +29,7 @@ const ExerciseCard = ({ exercise }) => {
             textTransform: "capitalize",
           }}
         >
-          {exercise.bodyPart}
+          {exercise.bodypart?.name}
         </Button>
 
         <Button
@@ -30,7 +42,7 @@ const ExerciseCard = ({ exercise }) => {
             textTransform: "capitalize",
           }}
         >
-          {exercise.target}
+          {exercise.target?.name}
         </Button>
       </Stack>
       <Typography

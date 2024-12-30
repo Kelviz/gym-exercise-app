@@ -4,18 +4,23 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { fetchData, exerciseOptions } from "../utils/fetchData";
 import HorizontalScrollbar from "./HorizontalScrollbar";
 
-const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
-  const [search, setSearch] = useState("");
+const SearchExercises = ({
+  setExercises,
+  bodyPart,
+  setBodyPart,
+  setCurrentPage,
+  currentPage,
+  setTotalPages,
+  setSearch,
+  search,
+}) => {
   const [bodyParts, setBodyParts] = useState([]);
 
   useEffect(() => {
     const fetchExercisesData = async () => {
-      const bodyPartsData = await fetchData(
-        "https://exercisedb.p.rapidapi.com/exercises/bodyPartList",
-        exerciseOptions
-      );
+      const bodyPartsData = await fetchData("/body-list/", exerciseOptions);
 
-      setBodyParts(["all", ...bodyPartsData]);
+      setBodyParts([{ name: "all", id: "all" }, ...bodyPartsData.results]);
     };
 
     fetchExercisesData();
@@ -23,22 +28,21 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 
   const handleSearch = async () => {
     if (search) {
-      const exercisesData = await fetchData(
-        "https://exercisedb.p.rapidapi.com/exercises/",
-        exerciseOptions
-      );
+      try {
+        const exercisesData = await fetchData(
+          `/exercises/search/?search=${search}&page=${currentPage}`,
+          exerciseOptions
+        );
+        console.log("searched exercise", exercisesData);
 
-      const searchedExercises = exercisesData.filter(
-        (exercise) =>
-          exercise.name.toLowerCase().includes(search) ||
-          exercise.target.toLowerCase().includes(search) ||
-          exercise.equipment.toLowerCase().includes(search) ||
-          exercise.bodyPart.toLowerCase().includes(search)
-      );
-
-      setSearch("");
-      setExercises(searchedExercises);
+        setExercises(exercisesData.data);
+        setTotalPages(exercisesData?.pagination?.total_pages);
+      } catch (error) {
+        console.error("Error fetching exercises:", error);
+      }
     }
+    setCurrentPage(1);
+    window.scrollTo({ top: 1808, left: 100, behavior: "smooth" });
   };
 
   return (
@@ -93,7 +97,9 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
           data={bodyParts}
           bodyPart={bodyPart}
           setBodyPart={setBodyPart}
+          setSearch={setSearch}
           isBodyParts
+          setCurrentPage={setCurrentPage}
         />
       </Box>
     </Stack>

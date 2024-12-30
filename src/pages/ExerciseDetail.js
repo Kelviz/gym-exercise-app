@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box } from "@mui/material";
 
-import { exerciseOptions, fetchData, youtubeOptions } from "../utils/fetchData";
+import {
+  exerciseOptions,
+  fetchData,
+  youtubeOptions,
+  fetchYt,
+} from "../utils/fetchData";
 import Detail from "../components/Detail";
 import ExerciseVideos from "../components/ExerciseVideos";
 import SimilarExercise from "../components/SimilarExercise";
@@ -17,35 +22,39 @@ const ExerciseDetail = () => {
 
   useEffect(() => {
     const fetchExerciseData = async () => {
-      const exerciseDbUrl = "https://exercisedb.p.rapidapi.com";
       const youtubeSearchUrl =
         "https://youtube-search-and-download.p.rapidapi.com";
 
       const exerciseDetailData = await fetchData(
-        `${exerciseDbUrl}/exercises/exercise/${id}`,
+        `/exercises/${id}/`,
         exerciseOptions
       );
-      setExerciseDetail(exerciseDetailData);
 
-      const exerciseVideosData = await fetchData(
-        `${youtubeSearchUrl}/search?query=${exerciseDetailData.name} exercise`,
+      if (exerciseDetailData.status === "successful") {
+        setExerciseDetail(exerciseDetailData.data);
+      }
+
+      const exerciseVideosData = await fetchYt(
+        `${youtubeSearchUrl}/search?query=${exerciseDetailData?.data?.name} exercise`,
         youtubeOptions
       );
+
       setExerciseVideos(exerciseVideosData.contents);
       console.log(exerciseVideos);
 
       const targetMuscleExercisesData = await fetchData(
-        `${exerciseDbUrl}/exercises/target/${exerciseDetailData.target}`,
+        `/exercises/?target=${exerciseDetailData?.data?.target?.name}`,
         exerciseOptions
       );
-      setTargetMuscleExercises(targetMuscleExercisesData);
+
+      setTargetMuscleExercises(targetMuscleExercisesData?.data);
 
       const equipmentExercisesData = await fetchData(
-        `${exerciseDbUrl}/exercises/equipment/${exerciseDetailData.equipment}`,
+        `/exercises/?equipment=${exerciseDetailData?.data?.equipment?.name}`,
         exerciseOptions
       );
 
-      setEquipmentExercises(equipmentExercisesData);
+      setEquipmentExercises(equipmentExercisesData.data);
     };
 
     window.scrollTo({ top: 0, behavior: "smooth" });

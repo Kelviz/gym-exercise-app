@@ -7,7 +7,14 @@ import RightArrowIcon from "../assets/icons/right-arrow.png";
 import LeftArrowIcon from "../assets/icons/left-arrow.png";
 import ExerciseCard from "./ExerciseCard";
 
-const HorizontalScrollbar = ({ data, bodyPart, setBodyPart, isBodyParts }) => {
+const HorizontalScrollbar = ({
+  data,
+  bodyPart,
+  setBodyPart,
+  isBodyParts,
+  setCurrentPage,
+  setSearch,
+}) => {
   const LeftArrow = () => {
     const { scrollPrev } = useContext(VisibilityContext);
 
@@ -30,17 +37,14 @@ const HorizontalScrollbar = ({ data, bodyPart, setBodyPart, isBodyParts }) => {
   return (
     <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow}>
       {data.map((item) => (
-        <Box
-          key={item.id || item}
-          itemId={item.id || item}
-          title={item.id || item}
-          m="0 40px"
-        >
+        <Box key={item.id} itemId={item.id} title={item.name} m="0 40px">
           {isBodyParts ? (
             <BodyPart
-              item={item}
+              item={item.name}
               setBodyPart={setBodyPart}
               bodyPart={bodyPart}
+              setCurrentPage={setCurrentPage}
+              setSearch={setSearch}
             />
           ) : (
             <ExerciseCard exercise={item} />
