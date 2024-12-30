@@ -7,7 +7,7 @@ const ExerciseCard = ({ exercise }) => {
     if (image.startsWith("http")) {
       return image; // It's already a full URL
     }
-    return `http://127.0.0.1:8000${image}`; // Prepend base URL
+    return `https://exercise.moviebuzz.com.ng${image}`; // Prepend base URL
   };
 
   console.log("excerises data", exercise);
